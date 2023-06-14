@@ -36,7 +36,7 @@ public class TransactionController {
 	}
 
 	@GetMapping("/types/{type}")
-	public ResponseEntity<List<String>> getTransactionsByType(@PathVariable String type) {
+	public ResponseEntity<List<Integer>> getTransactionsByType(@PathVariable String type) {
 		return transactionService.getTransactionByType(type);
 	}
 

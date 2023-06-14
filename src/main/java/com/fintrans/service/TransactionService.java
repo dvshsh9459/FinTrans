@@ -55,10 +55,10 @@ public class TransactionService {
 				.type(transactionFromDb.getType()).build();
 	}
 
-	public ResponseEntity<List<String>> getTransactionByType(String type) {
-		List<String> typeList =transactionRepository.findAll().stream()
+	public ResponseEntity<List<Integer>> getTransactionByType(String type) {
+		List<Integer> typeList =transactionRepository.findAll().stream()
 				.filter(transaction -> transaction.getType().equalsIgnoreCase(type))
-				.map(Transaction :: getType)
+				.map(Transaction :: getTransactionId)
 				.collect(Collectors.toList());
 		return ResponseEntity.ok().body(typeList);
 	}
