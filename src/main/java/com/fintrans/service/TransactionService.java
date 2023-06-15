@@ -3,6 +3,7 @@ package com.fintrans.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,11 +64,11 @@ public class TransactionService {
 		return ResponseEntity.ok().body(typeList);
 	}
 
-	public ResponseEntity<List<String>> getTransactionByCurrency(String currency) {
+	public ResponseEntity<Set<String>> getTransactionByCurrency(String currency) {
 		List<Transaction> allTransactions = transactionRepository.findAll();
-		List<String> currencyList =  allTransactions.stream()
+		Set<String> currencyList =  allTransactions.stream()
 				.map(Transaction::getCurrency)
-				.collect(Collectors.toList());
+				.collect(Collectors.toSet());
 		return ResponseEntity.ok().body(currencyList);
 	}
 

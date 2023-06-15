@@ -1,20 +1,29 @@
 # FinTrans
-The service should support returning • All transactions of a type • All transactions of a currency. • Also, transactions can be linked to each other (using a "parent_id") and the total amount involved
-API Spec:
-PUT /bookingservice/transaction/$transaction_id
-Body: {“amount”: double, “currency”: string, “type”: string, “parent_id”: integer}
-transaction_id: an integer that identifies the new transaction
-amount: a double for the amount of the transaction
-currency: a string for the currency of the transaction
-type: a string for defining what the transaction is for
-parent_id: an optional integer which might link to a related parent transaction
-GET /bookingservice/transaction/$transaction_id
-Returns the specified transaction as JSON.
-GET /bookingservice/types/$type
-Returns a JSON list of all transaction ids of the given type.
-GET /bookingservice/currencies
-Returns a JSON list with all used currencies in the existing transactions.
-GET /bookingservice/sum/$transaction_id
-Returns: {“sum”: double, “currency”: string}
-Returns the sum of all linked transactions with the respective currency.
-(Note: all linked transactions must have the same currency)
+
+#INTRODUCTION
+It financial transactions in-memory database project and returns information about those transactions.
+This support returning 
+• All transactions of a type 
+• All transactions of a currency. 
+• Also, transactions can be linked to each other (using a "parent_id") and the total amount involved
+ 
+#TECH STACK
+Java17, Springboot3, docker, H2 Database
+
+#UNDERSTANDING
+In this project we are storing data related to transaction, for this implementation it is financial transaction.
+
+#Use Cases
+1. If we make some expense calculator for personal use, this use case can be used.
+2. If we make some accounting application.
+3. We want to keep transactions in e-commerce website.
+4. We can also use this sceanario in any application where we are monitoring transactions.
+
+#About Implementation
+For this one it is simple controller, service and repository pattern.
+Also default beahavior is in place for every edge cases.
+Default Open API ui is implemented i.e., documentation for APIs.
+
+#Future Code improvement
+We can create our own Exception handling mechanism, we can specify the standard format(Json/text/any other) request/response APIs.
+Later we can customized swagger implementation.
