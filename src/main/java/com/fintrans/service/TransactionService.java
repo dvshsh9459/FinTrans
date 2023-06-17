@@ -17,12 +17,21 @@ import com.fintrans.request.TransactionRequest;
 import com.fintrans.response.CurrencySumResponse;
 import com.fintrans.response.TransactionResponse;
 
+/**
+ *  This is a service class for transaction*/
 @Service
 public class TransactionService {
 
 	@Autowired
 	TransactionRepository transactionRepository;
 
+
+	/**This method will insert/update data for transaction
+	 * @param transactionId
+	 * @param transactionRequest
+	 *
+	 * @return ResponseEntity<String>
+	 * */
 	public ResponseEntity<String> addTransaction(Integer transactionId, TransactionRequest transactionRequest) {
 		HttpStatus httpStatusCode =  HttpStatus.OK;
 		String responseMessage = "OK";
@@ -34,6 +43,12 @@ public class TransactionService {
 		return new ResponseEntity<>(responseMessage, httpStatusCode);
 	}
 
+	/**This method will create entity object from request
+	 * @param transactionId
+	 * @param transactionRequest
+	 *
+	 * @return Transaction
+	 * */
 	private Transaction buildDataForDb(Integer transactionId, TransactionRequest transactionRequest) {
 		return Transaction.builder().transactionId(transactionId)
 				.parentId(transactionRequest.getParentId())
@@ -42,12 +57,24 @@ public class TransactionService {
 				.type(transactionRequest.getType().toUpperCase()).build();
 	}
 
+
+	/**
+	 * This method will return the transaction record for given transactionId
+	 * @param transactionId
+	 *
+	 * @return ResponseEntity<TransactionResponse> */
 	public ResponseEntity<TransactionResponse> getTransactionById(Integer transactionId) {
 		Transaction transactionFromDb = transactionRepository.getReferenceById(transactionId);
 		TransactionResponse transactionResponse= getTransactionResponse(transactionFromDb);
 		return ResponseEntity.ok().body(transactionResponse);
 	}
 
+
+	/**
+	 * This method will return the transaction response for given transaction From Db
+	 * @param transactionFromDb
+	 *
+	 * @return TransactionResponse */
 	private TransactionResponse getTransactionResponse(Transaction transactionFromDb) {
 		return TransactionResponse.builder().transactionId(transactionFromDb.getTransactionId())
 				.parentId(transactionFromDb.getParentId())
@@ -56,6 +83,10 @@ public class TransactionService {
 				.type(transactionFromDb.getType()).build();
 	}
 
+	/**
+	 * This method returns a JSON list of all transaction ids of the given type.
+	 *
+	 * @return ResponseEntity<List<Integer>>  */
 	public ResponseEntity<List<Integer>> getTransactionByType(String type) {
 		List<Integer> typeList =transactionRepository.findAll().stream()
 				.filter(transaction -> transaction.getType().equalsIgnoreCase(type))
@@ -64,14 +95,23 @@ public class TransactionService {
 		return ResponseEntity.ok().body(typeList);
 	}
 
-	public ResponseEntity<Set<String>> getTransactionByCurrency(String currency) {
+	/**
+	 * This method returns a JSON list with all used currencies in the existing transactions.
+	 *
+	 * @return ResponseEntity<Set<String>> */
+	public ResponseEntity<Set<String>> getTransactionByCurrency() {
 		List<Transaction> allTransactions = transactionRepository.findAll();
 		Set<String> currencyList =  allTransactions.stream()
 				.map(Transaction::getCurrency)
 				.collect(Collectors.toSet());
 		return ResponseEntity.ok().body(currencyList);
 	}
-
+	
+	/**
+	 * This method returns the sum of all linked transactions with the respective currency
+	 * @param transactionId
+	 *
+	 * @return  ResponseEntity<List<CurrencySumResponse>> */
 	public ResponseEntity<List<CurrencySumResponse>> getTotalAmount(Integer transactionId) {
 		Optional<Transaction> optionalTransaction = transactionRepository.findById(transactionId);
 		List<CurrencySumResponse> currencySumResponseList = new ArrayList<>();

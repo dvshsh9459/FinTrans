@@ -9,6 +9,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ *  This is a entity class for transaction*/
 @Data
 @Entity
 @Builder

@@ -4,6 +4,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
 
+/**
+ *  This is a class for request object for transaction*/
 @Data
 @Builder
 @ToString
