@@ -106,7 +106,7 @@ public class TransactionService {
 				.collect(Collectors.toSet());
 		return ResponseEntity.ok().body(currencyList);
 	}
-	
+
 	/**
 	 * This method returns the sum of all linked transactions with the respective currency
 	 * @param transactionId
